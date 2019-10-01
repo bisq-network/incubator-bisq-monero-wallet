@@ -19,8 +19,6 @@ package bisq.core.presentation;
 
 import bisq.common.app.AppModule;
 
-import bisq.core.xmr.wallet.XmrWalletRpcWrapper;
-
 import org.springframework.core.env.Environment;
 
 import com.google.inject.Singleton;

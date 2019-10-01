@@ -17,10 +17,7 @@
 
 package bisq.core.payment;
 
-import bisq.core.locale.TradeCurrency;
 import bisq.core.payment.payload.PaymentMethod;
-import bisq.core.xmr.wallet.XmrWalletRpcWrapper;
-
 
 public class PaymentAccountFactory {
     public static PaymentAccount getPaymentAccount(PaymentMethod paymentMethod) {
@@ -94,16 +91,4 @@ public class PaymentAccountFactory {
                 throw new RuntimeException("Not supported PaymentMethod: " + paymentMethod);
         }
     }
-    
-    public static InstantCryptoCurrencyAccount producePrimaryWalletAccount(XmrWalletRpcWrapper xmrWalletRpcWrapper, TradeCurrency xmrTradeCurrency) {
-    	InstantCryptoCurrencyAccount account = new InstantCryptoCurrencyAccount();
-    	account.init();
-
-    	account.setAddress(xmrWalletRpcWrapper.getPrimaryAddress());
-    	account.setSingleTradeCurrency(xmrTradeCurrency);
-    	account.setAccountName("XMR Wallet: " + account.getAddress().substring(0, 6) + "...");
-    	
-    	return account;
-    }
-
 }
