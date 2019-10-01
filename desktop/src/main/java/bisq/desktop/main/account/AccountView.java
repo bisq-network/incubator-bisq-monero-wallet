@@ -30,6 +30,7 @@ import bisq.desktop.main.account.content.fiataccounts.FiatAccountsView;
 import bisq.desktop.main.account.content.notifications.MobileNotificationsView;
 import bisq.desktop.main.account.content.password.PasswordView;
 import bisq.desktop.main.account.content.seedwords.SeedWordsView;
+import bisq.desktop.main.account.content.wallet.AltCoinWalletsView;
 import bisq.desktop.main.account.register.arbitrator.ArbitratorRegistrationView;
 import bisq.desktop.main.account.register.mediator.MediatorRegistrationView;
 import bisq.desktop.main.overlays.popups.Popup;
@@ -62,7 +63,7 @@ import java.util.List;
 public class AccountView extends ActivatableView<TabPane, Void> {
 
     @FXML
-    Tab fiatAccountsTab, altcoinAccountsTab, notificationTab,
+    Tab fiatAccountsTab, altcoinAccountsTab, altcoinWalletsTab, notificationTab,
             passwordTab, seedwordsTab, backupTab;
 
     private Navigation.Listener navigationListener;
@@ -92,6 +93,7 @@ public class AccountView extends ActivatableView<TabPane, Void> {
 
         fiatAccountsTab.setText(Res.get("account.menu.paymentAccount").toUpperCase());
         altcoinAccountsTab.setText(Res.get("account.menu.altCoinsAccountView").toUpperCase());
+        altcoinWalletsTab.setText(Res.get("account.menu.altCoinsWalletView").toUpperCase());
         notificationTab.setText(Res.get("account.menu.notifications").toUpperCase());
         passwordTab.setText(Res.get("account.menu.password").toUpperCase());
         seedwordsTab.setText(Res.get("account.menu.seedWords").toUpperCase());
@@ -140,6 +142,8 @@ public class AccountView extends ActivatableView<TabPane, Void> {
                 navigation.navigateTo(MainView.class, AccountView.class, FiatAccountsView.class);
             } else if (newValue == altcoinAccountsTab && selectedTab != altcoinAccountsTab) {
                 navigation.navigateTo(MainView.class, AccountView.class, AltCoinAccountsView.class);
+            } else if (newValue == altcoinWalletsTab && selectedTab != altcoinWalletsTab) {
+                navigation.navigateTo(MainView.class, AccountView.class, AltCoinWalletsView.class);
             } else if (newValue == notificationTab && selectedTab != notificationTab) {
                 navigation.navigateTo(MainView.class, AccountView.class, MobileNotificationsView.class);
             } else if (newValue == passwordTab && selectedTab != passwordTab) {
@@ -192,6 +196,8 @@ public class AccountView extends ActivatableView<TabPane, Void> {
                 navigation.navigateTo(MainView.class, AccountView.class, FiatAccountsView.class);
             else if (root.getSelectionModel().getSelectedItem() == altcoinAccountsTab)
                 navigation.navigateTo(MainView.class, AccountView.class, AltCoinAccountsView.class);
+        	else if (root.getSelectionModel().getSelectedItem() == altcoinWalletsTab)
+        		navigation.navigateTo(MainView.class, AccountView.class, AltCoinWalletsView.class);
             else if (root.getSelectionModel().getSelectedItem() == notificationTab)
                 navigation.navigateTo(MainView.class, AccountView.class, MobileNotificationsView.class);
             else if (root.getSelectionModel().getSelectedItem() == passwordTab)
@@ -244,6 +250,8 @@ public class AccountView extends ActivatableView<TabPane, Void> {
             selectedTab = fiatAccountsTab;
         } else if (view instanceof AltCoinAccountsView) {
             selectedTab = altcoinAccountsTab;
+        } else if (view instanceof AltCoinWalletsView) {
+            selectedTab = altcoinWalletsTab;
         } else if (view instanceof MobileNotificationsView) {
             selectedTab = notificationTab;
         } else if (view instanceof PasswordView) {

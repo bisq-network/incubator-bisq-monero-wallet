@@ -112,7 +112,7 @@ class TradesChartsViewModel extends ActivatableViewModel {
     private Map<Long, Pair<Date, Set<TradeStatistics2>>> itemsPerInterval;
 
     TickUnit tickUnit = TickUnit.DAY;
-    final int maxTicks = 90;
+    final int maxTicks = 30;
     private int selectedTabIndex;
 
     ///////////////////////////////////////////////////////////////////////////////////////////

@@ -38,6 +38,12 @@
                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
     </Tab>
+    <Tab fx:id="altcoinWalletsTab" closable="false">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER"
+                    fitToHeight="true"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+    </Tab>
     <Tab fx:id="notificationTab" closable="false">
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER"
                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

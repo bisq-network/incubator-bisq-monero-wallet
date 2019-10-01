@@ -1454,6 +1454,13 @@ message PreferencesPayload {
     double buyer_security_deposit_as_percent_for_crypto = 52;
     int32 block_notify_port = 53;
     int32 css_theme = 54;
+    bool use_bisq_xmr_wallet = 55;
+    string xmr_user_host = 56;
+    string xmr_host_port = 57;
+    string xmr_rpc_user = 58;
+    string xmr_rpc_pwd = 59;
+    repeated string xmr_hosts = 60;
+    int32 xmr_host_option_ordinal = 61;    
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

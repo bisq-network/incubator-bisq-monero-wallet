@@ -240,23 +240,11 @@ public abstract class TradeProtocol {
     }
 
     public void applyMailboxMessage(DecryptedMessageWithPubKey decryptedMessageWithPubKey, Trade trade) {
-        NetworkEnvelope networkEnvelope = decryptedMessageWithPubKey.getNetworkEnvelope();
-        log.debug("applyMailboxMessage {}", networkEnvelope);
+        log.debug("applyMailboxMessage {}", decryptedMessageWithPubKey.getNetworkEnvelope());
         if (processModel.getTradingPeer().getPubKeyRing() != null &&
                 decryptedMessageWithPubKey.getSignaturePubKey().equals(processModel.getTradingPeer().getPubKeyRing().getSignaturePubKey())) {
             processModel.setDecryptedMessageWithPubKey(decryptedMessageWithPubKey);
-            doApplyMailboxMessage(networkEnvelope, trade);
-
-            // This is just a quick fix for the missing handling of the mediation MailboxMessages.
-            // With the new trade protocol that will be refactored further with using doApplyMailboxMessage...
-            if (networkEnvelope instanceof MailboxMessage && networkEnvelope instanceof TradeMessage) {
-                NodeAddress sender = ((MailboxMessage) networkEnvelope).getSenderNodeAddress();
-                if (networkEnvelope instanceof MediatedPayoutTxSignatureMessage) {
-                    handle((MediatedPayoutTxSignatureMessage) networkEnvelope, sender);
-                } else if (networkEnvelope instanceof MediatedPayoutTxPublishedMessage) {
-                    handle((MediatedPayoutTxPublishedMessage) networkEnvelope, sender);
-                }
-            }
+            doApplyMailboxMessage(decryptedMessageWithPubKey.getNetworkEnvelope(), trade);
         } else {
             log.error("SignaturePubKey in message does not match the SignaturePubKey we have stored to that trading peer.");
         }

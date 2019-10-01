@@ -40,7 +40,8 @@ import javafx.beans.property.SimpleObjectProperty;
  * There can be only 1 errorMessageDisplays at a time we use static field for it.
  * The position is derived from the position of the textField itself or if set from the layoutReference node.
  */
-//TODO There are some rare situation where it behaves buggy. Needs further investigation and improvements.
+//TODO There are some rare situation where it behaves buggy. Needs further investigation and improvements. Also
+// consider replacement with controlsFX components.
 public class InputTextField extends JFXTextField {
 
     private final ObjectProperty<InputValidator.ValidationResult> validationResult = new SimpleObjectProperty<>

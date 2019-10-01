@@ -82,13 +82,11 @@ import static org.bitcoinj.core.TransactionConfidence.ConfidenceType.PENDING;
 @Slf4j
 public class BsqWalletService extends WalletService implements DaoStateListener {
 
-
     public interface WalletTransactionsChangeListener {
 
         void onWalletTransactionsChange();
     }
 
-    private final DaoKillSwitch daoKillSwitch;
     private final BsqCoinSelector bsqCoinSelector;
     private final NonBsqCoinSelector nonBsqCoinSelector;
     private final DaoStateService daoStateService;
@@ -126,8 +124,7 @@ public class BsqWalletService extends WalletService implements DaoStateListener 
                             DaoStateService daoStateService,
                             UnconfirmedBsqChangeOutputListService unconfirmedBsqChangeOutputListService,
                             Preferences preferences,
-                            FeeService feeService,
-                            DaoKillSwitch daoKillSwitch) {
+                            FeeService feeService) {
         super(walletsSetup,
                 preferences,
                 feeService);
@@ -136,7 +133,6 @@ public class BsqWalletService extends WalletService implements DaoStateListener 
         this.nonBsqCoinSelector = nonBsqCoinSelector;
         this.daoStateService = daoStateService;
         this.unconfirmedBsqChangeOutputListService = unconfirmedBsqChangeOutputListService;
-        this.daoKillSwitch = daoKillSwitch;
 
         walletsSetup.addSetupCompletedHandler(() -> {
             wallet = walletsSetup.getBsqWallet();
@@ -532,7 +528,7 @@ public class BsqWalletService extends WalletService implements DaoStateListener 
 
     private Transaction getPreparedSendTx(String receiverAddress, Coin receiverAmount, CoinSelector coinSelector)
             throws AddressFormatException, InsufficientBsqException, WalletException, TransactionVerificationException, BsqChangeBelowDustException {
-        daoKillSwitch.assertDaoIsNotDisabled();
+        DaoKillSwitch.assertDaoIsNotDisabled();
         Transaction tx = new Transaction(params);
         checkArgument(Restrictions.isAboveDust(receiverAmount),
                 "The amount is too low (dust limit).");
@@ -587,7 +583,7 @@ public class BsqWalletService extends WalletService implements DaoStateListener 
     }
 
     private Transaction getPreparedBurnFeeTx(Coin fee, boolean requireChangeOutput) throws InsufficientBsqException {
-        daoKillSwitch.assertDaoIsNotDisabled();
+        DaoKillSwitch.assertDaoIsNotDisabled();
         final Transaction tx = new Transaction(params);
         addInputsAndChangeOutputForTx(tx, fee, bsqCoinSelector, requireChangeOutput);
         // printTx("getPreparedFeeTx", tx);
@@ -639,7 +635,7 @@ public class BsqWalletService extends WalletService implements DaoStateListener 
     // We create a tx with Bsq inputs for the fee, one output for the stake and optional one BSQ change output.
     // As the fee amount will be missing in the output those BSQ fees are burned.
     public Transaction getPreparedBlindVoteTx(Coin fee, Coin stake) throws InsufficientBsqException {
-        daoKillSwitch.assertDaoIsNotDisabled();
+        DaoKillSwitch.assertDaoIsNotDisabled();
         Transaction tx = new Transaction(params);
         tx.addOutput(new TransactionOutput(params, tx, stake, getUnusedAddress()));
         addInputsAndChangeOutputForTx(tx, fee.add(stake), bsqCoinSelector, false);
@@ -653,7 +649,7 @@ public class BsqWalletService extends WalletService implements DaoStateListener 
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     public Transaction getPreparedVoteRevealTx(TxOutput stakeTxOutput) {
-        daoKillSwitch.assertDaoIsNotDisabled();
+        DaoKillSwitch.assertDaoIsNotDisabled();
         Transaction tx = new Transaction(params);
         final Coin stake = Coin.valueOf(stakeTxOutput.getValue());
         Transaction blindVoteTx = getTransaction(stakeTxOutput.getTxId());
@@ -672,7 +668,7 @@ public class BsqWalletService extends WalletService implements DaoStateListener 
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     public Transaction getPreparedLockupTx(Coin lockupAmount) throws AddressFormatException, InsufficientBsqException {
-        daoKillSwitch.assertDaoIsNotDisabled();
+        DaoKillSwitch.assertDaoIsNotDisabled();
         Transaction tx = new Transaction(params);
         checkArgument(Restrictions.isAboveDust(lockupAmount), "The amount is too low (dust limit).");
         tx.addOutput(new TransactionOutput(params, tx, lockupAmount, getUnusedAddress()));
@@ -686,7 +682,7 @@ public class BsqWalletService extends WalletService implements DaoStateListener 
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     public Transaction getPreparedUnlockTx(TxOutput lockupTxOutput) throws AddressFormatException {
-        daoKillSwitch.assertDaoIsNotDisabled();
+        DaoKillSwitch.assertDaoIsNotDisabled();
         Transaction tx = new Transaction(params);
         // Unlocking means spending the full value of the locked txOutput to another txOutput with the same value
         Coin amountToUnlock = Coin.valueOf(lockupTxOutput.getValue());

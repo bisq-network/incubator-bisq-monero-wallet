@@ -94,7 +94,6 @@ public final class PreferencesPayload implements PersistableEnvelope {
     private long buyerSecurityDepositAsLong;
 
     private boolean useAnimations;
-    private int cssTheme;
     @Nullable
     private PaymentAccount selectedPaymentAccountForCreateOffer;
     private boolean payFeeInBtc = true;
@@ -125,8 +124,17 @@ public final class PreferencesPayload implements PersistableEnvelope {
     private int ignoreDustThreshold = 600;
     private double buyerSecurityDepositAsPercentForCrypto = getDefaultBuyerSecurityDepositAsPercent(new CryptoCurrencyAccount());
     private int blockNotifyPort;
-
-
+    private int cssTheme;
+    
+    private boolean useBisqXmrWallet = false;
+    private String xmrUserHost = "127.0.0.1";
+    private String xmrHostPort = "29088";
+    @Nullable
+    private String xmrRpcUser;
+    @Nullable
+    private String xmrRpcPwd;
+    private List<String> xmrHosts = new ArrayList<>();
+    private int xmrHostOptionOrdinal;    
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Constructor
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -171,7 +179,6 @@ public final class PreferencesPayload implements PersistableEnvelope {
                 .setDirectoryChooserPath(directoryChooserPath)
                 .setBuyerSecurityDepositAsLong(buyerSecurityDepositAsLong)
                 .setUseAnimations(useAnimations)
-                .setCssTheme(cssTheme)
                 .setPayFeeInBtc(payFeeInBtc)
                 .setBridgeOptionOrdinal(bridgeOptionOrdinal)
                 .setTorTransportOrdinal(torTransportOrdinal)
@@ -185,7 +192,15 @@ public final class PreferencesPayload implements PersistableEnvelope {
                 .setBuyerSecurityDepositAsPercent(buyerSecurityDepositAsPercent)
                 .setIgnoreDustThreshold(ignoreDustThreshold)
                 .setBuyerSecurityDepositAsPercentForCrypto(buyerSecurityDepositAsPercentForCrypto)
-                .setBlockNotifyPort(blockNotifyPort);
+                .setBlockNotifyPort(blockNotifyPort)
+                .setCssTheme(cssTheme)
+                .setUseBisqXmrWallet(useBisqXmrWallet)
+                .setXmrUserHost(xmrUserHost)
+                .setXmrHostPort(xmrHostPort)
+                .setXmrRpcUser(xmrRpcUser)
+                .setXmrRpcPwd(xmrRpcPwd)
+                .addAllXmrHosts(xmrHosts)
+                .setXmrHostOptionOrdinal(xmrHostOptionOrdinal);
         Optional.ofNullable(backupDirectory).ifPresent(builder::setBackupDirectory);
         Optional.ofNullable(preferredTradeCurrency).ifPresent(e -> builder.setPreferredTradeCurrency((protobuf.TradeCurrency) e.toProtoMessage()));
         Optional.ofNullable(offerBookChartScreenCurrencyCode).ifPresent(builder::setOfferBookChartScreenCurrencyCode);
@@ -249,7 +264,6 @@ public final class PreferencesPayload implements PersistableEnvelope {
                 proto.getDirectoryChooserPath(),
                 proto.getBuyerSecurityDepositAsLong(),
                 proto.getUseAnimations(),
-                proto.getCssTheme(),
                 paymentAccount,
                 proto.getPayFeeInBtc(),
                 proto.getBridgeAddressesList().isEmpty() ? null : new ArrayList<>(proto.getBridgeAddressesList()),
@@ -271,7 +285,15 @@ public final class PreferencesPayload implements PersistableEnvelope {
                 proto.getBuyerSecurityDepositAsPercent(),
                 proto.getIgnoreDustThreshold(),
                 proto.getBuyerSecurityDepositAsPercentForCrypto(),
-                proto.getBlockNotifyPort());
+                proto.getBlockNotifyPort(),
+                proto.getCssTheme(),
+	            proto.getUseBisqXmrWallet(),
+	            proto.getXmrUserHost(),
+	            proto.getXmrHostPort(),
+	            proto.getXmrRpcUser(),
+	            proto.getXmrRpcPwd(),
+	            proto.getXmrHostsList(),
+	            proto.getXmrHostOptionOrdinal());
 
     }
 }

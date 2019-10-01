@@ -50,6 +50,8 @@ import bisq.core.user.User;
 import bisq.core.util.BSFormatter;
 import bisq.core.util.BsqFormatter;
 
+import bisq.core.xmr.wallet.XmrWalletRpcWrapper;
+
 import bisq.network.p2p.network.BridgeAddressProvider;
 import bisq.network.p2p.seed.SeedNodeRepository;
 
@@ -151,6 +153,7 @@ public class GuiceSetupTest {
         assertSingleton(MediationManager.class);
         assertSingleton(MediationDisputeListService.class);
         assertSingleton(TraderChatManager.class);
+        assertSingleton(XmrWalletRpcWrapper.class);
 
         assertNotSingleton(Storage.class);
     }

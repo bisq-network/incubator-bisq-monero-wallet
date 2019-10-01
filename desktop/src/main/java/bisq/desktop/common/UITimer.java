@@ -18,7 +18,8 @@
 package bisq.desktop.common;
 
 import bisq.common.Timer;
-import bisq.common.reactfx.FxTimer;
+
+import org.reactfx.util.FxTimer;
 
 import java.time.Duration;
 
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 public class UITimer implements Timer {
     private final Logger log = LoggerFactory.getLogger(UITimer.class);
-    private bisq.common.reactfx.Timer timer;
+    private org.reactfx.util.Timer timer;
 
     public UITimer() {
     }
