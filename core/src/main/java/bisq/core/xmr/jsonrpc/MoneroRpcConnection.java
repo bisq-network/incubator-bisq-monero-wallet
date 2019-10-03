@@ -19,10 +19,6 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * Maintains a connection and sends requests to a Monero RPC API.
  */
@@ -32,12 +28,6 @@ public class MoneroRpcConnection {
   private static final Logger LOGGER = LoggerFactory.getLogger(MoneroRpcConnection.class);
 
   // custom mapper to deserialize integers to BigIntegers
-  public static ObjectMapper MAPPER;
-  static {
-    MAPPER = new ObjectMapper();
-    MAPPER.setSerializationInclusion(Include.NON_NULL);
-    MAPPER.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true);
-  }
 
   // instance variables
   private String uri;
@@ -119,7 +109,7 @@ public class MoneroRpcConnection {
       validateHttpResponse(resp);
 
       // deserialize response
-      Map<String, Object> respMap = JsonUtils.toMap(MAPPER, StreamUtils.streamToString(resp.getEntity().getContent()));
+      Map<String, Object> respMap = JsonUtils.toMap(JsonUtils.DEFAULT_MAPPER, StreamUtils.streamToString(resp.getEntity().getContent()));
       LOGGER.debug("Received response to method '" + method + "': " + JsonUtils.serialize(respMap));
       EntityUtils.consume(resp.getEntity());
 
@@ -175,7 +165,7 @@ public class MoneroRpcConnection {
       validateHttpResponse(resp);
       
       // deserialize response
-      Map<String, Object> respMap = JsonUtils.toMap(MAPPER, StreamUtils.streamToString(resp.getEntity().getContent()));
+      Map<String, Object> respMap = JsonUtils.toMap(JsonUtils.DEFAULT_MAPPER, StreamUtils.streamToString(resp.getEntity().getContent()));
       LOGGER.debug("Received response to path '" + path + "': " + JsonUtils.serialize(respMap));
       EntityUtils.consume(resp.getEntity());
 

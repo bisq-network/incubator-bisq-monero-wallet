@@ -10,8 +10,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-
 import bisq.core.xmr.jsonrpc.result.Address;
 import bisq.core.xmr.jsonrpc.result.Balance;
 import bisq.core.xmr.jsonrpc.result.MoneroTransfer;
@@ -21,8 +19,6 @@ import bisq.core.xmr.jsonrpc.result.MoneroTx;
 public class MoneroWalletRpc {
 	
 	protected Logger log = LoggerFactory.getLogger(MoneroWalletRpc.class);
-	
-	private static final Gson GSON = new Gson();
 	
 	private MoneroRpcConnection rpcConnection; 
 
@@ -36,7 +32,7 @@ public class MoneroWalletRpc {
 		Map<String, Object> response = rpcConnection.sendJsonRequest("get_address", params);
 		log.debug("response => {}", response);
 		
-		Address address = GSON.fromJson(GSON.toJson(response.get("result")), Address.class);
+		Address address = JsonUtils.DEFAULT_MAPPER.fromJson(JsonUtils.DEFAULT_MAPPER.toJson(response.get("result")), Address.class);
 		log.debug("address => {}", address);
 		
 		return address.getAddress();
@@ -46,7 +42,7 @@ public class MoneroWalletRpc {
 		Map<String, Object> response = rpcConnection.sendJsonRequest("get_balance");
 		log.debug("response => {}", response);
 		
-		Balance balance = GSON.fromJson(GSON.toJson(response.get("result")), Balance.class);
+		Balance balance = JsonUtils.DEFAULT_MAPPER.fromJson(JsonUtils.DEFAULT_MAPPER.toJson(response.get("result")), Balance.class);
 		log.debug("balance => {}", balance);
 		
 		return balance;
@@ -64,7 +60,7 @@ public class MoneroWalletRpc {
 		Map<String, Object> response = rpcConnection.sendJsonRequest("transfer", request);
 		log.debug("response => {}", response);
 
-		MoneroTx moneroTx = GSON.fromJson(GSON.toJson(response.get("result")), MoneroTx.class);
+		MoneroTx moneroTx = JsonUtils.DEFAULT_MAPPER.fromJson(JsonUtils.DEFAULT_MAPPER.toJson(response.get("result")), MoneroTx.class);
 		log.debug("moneroTx => {}", moneroTx);
 		
 		return moneroTx;
@@ -99,7 +95,7 @@ public class MoneroWalletRpc {
 			params.put("in", true);
 			response = rpcConnection.sendJsonRequest("get_transfers", params);	
 			log.debug("response => {}", response);
-			MoneroTransferList transferList = GSON.fromJson(GSON.toJson(response.get("result")), MoneroTransferList.class);
+			MoneroTransferList transferList = JsonUtils.DEFAULT_MAPPER.fromJson(JsonUtils.DEFAULT_MAPPER.toJson(response.get("result")), MoneroTransferList.class);
 			transfers.addAll(transferList.getIn());
 			transfers.addAll(transferList.getOut());
 			transfers.addAll(transferList.getPending());
@@ -112,7 +108,7 @@ public class MoneroWalletRpc {
 				params.put("txid", tid);
 				response = rpcConnection.sendJsonRequest("get_transfer_by_txid", params);
 				log.debug("response => {}", response);
-				MoneroTransfer transfer = GSON.fromJson(GSON.toJson(response.get("transfer")), MoneroTransfer.class);
+				MoneroTransfer transfer = JsonUtils.DEFAULT_MAPPER.fromJson(JsonUtils.DEFAULT_MAPPER.toJson(response.get("transfer")), MoneroTransfer.class);
 				transfers.add(transfer);
 			}
 		}
