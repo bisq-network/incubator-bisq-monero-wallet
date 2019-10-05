@@ -1,18 +1,9 @@
 package bisq.core.xmr.jsonrpc;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 
 /**
  * Collection of utilities for working with JSON.
@@ -21,30 +12,8 @@ import com.google.gson.stream.JsonWriter;
  */
 public class JsonUtils {
 
-	// set up jackson object mapper
-	public static final Gson DEFAULT_MAPPER = new GsonBuilder()
-			.registerTypeAdapter(BigInteger.class, new TypeAdapter<BigInteger>() {
-				@Override
-				public BigInteger read(JsonReader in) throws IOException {
-					if (in.peek() == JsonToken.NULL) {
-						in.nextNull();
-						return null;
-					}
-					try {
-						Double doubleVal = in.nextDouble();
-						BigDecimal bigDecimalVal = new BigDecimal(doubleVal);
-						
-						return new BigInteger(String.valueOf(bigDecimalVal.longValueExact()));
-					} catch (NumberFormatException e) {
-						throw new JsonSyntaxException(e);
-					}
-				}
-
-				@Override
-				public void write(JsonWriter out, BigInteger value) throws IOException {
-					out.value(value);
-				}
-			}).create();
+	// set up Gson object mapper
+	private static final Gson DEFAULT_MAPPER = new Gson();
 
 	/**
 	 * Serializes an object to a JSON string.
