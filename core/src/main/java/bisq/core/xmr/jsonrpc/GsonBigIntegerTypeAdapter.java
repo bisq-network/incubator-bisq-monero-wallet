@@ -1,6 +1,7 @@
 package bisq.core.xmr.jsonrpc;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class GsonBigIntegerTypeAdapter extends TypeAdapter<Object> {
       case NUMBER:
         //return in.nextDouble();
         String n = in.nextString();
-        return new BigInteger(n);
+        return new BigDecimal(n).toBigIntegerExact();
 
       case BOOLEAN:
         return in.nextBoolean();

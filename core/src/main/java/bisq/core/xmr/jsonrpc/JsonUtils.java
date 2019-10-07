@@ -23,7 +23,7 @@ public class JsonUtils {
 	 * @return String is the object serialized to a JSON string
 	 */
 	public static String serialize(Object obj) {
-		return DEFAULT_MAPPER.toJson(obj);
+		return serialize(DEFAULT_MAPPER, obj);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class JsonUtils {
 	 *         type
 	 */
 	public static <T> T deserialize(String json, Type type) {
-		return DEFAULT_MAPPER.fromJson(json, type);
+		return deserialize(DEFAULT_MAPPER, json, type);
 	}
 
 	/**
