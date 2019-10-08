@@ -4,8 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
-
 /**
  * Collection of utilities for working with streams.
  * 
@@ -21,7 +19,7 @@ public class StreamUtils {
    * @throws IOException 
    */
   public static byte[] streamToBytes(InputStream is) throws IOException {
-    byte[] bytes = IOUtils.toByteArray(is);
+    byte[] bytes = is.readAllBytes();
     is.close();
     return bytes;
   }
